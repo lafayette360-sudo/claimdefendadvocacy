@@ -22,9 +22,9 @@ YouTube channel. A token.json is cached afterward so you won't be prompted
 every time (token.json is also gitignored).
 
 Usage:
-    python scripts/youtube_upload.py path/to/episode1.mp4 \
-        --title "The Roof Damage Trap: Why Your Initial Inspection is a Lie" \
-        --description "..." \
+    python scripts/youtube_upload.py path/to/episode1.mp4 \\
+        --title "The Roof Damage Trap: Why Your Initial Inspection is a Lie" \\
+        --description "..." \\
         --tags "roof insurance claim,property damage,public adjuster"
 """
 
@@ -66,7 +66,7 @@ def get_authenticated_service():
     return build("youtube", "v3", credentials=creds)
 
 
-def upload_video(video_path, title, description, tags, privacy_status="private"):
+def upload_video(video_path, title, description, tags, privacy_status="public"):
     if not os.path.exists(video_path):
         raise FileNotFoundError(video_path)
 
@@ -80,7 +80,7 @@ def upload_video(video_path, title, description, tags, privacy_status="private")
             "categoryId": "27",  # Education
         },
         "status": {
-            "privacyStatus": privacy_status,  # staged private until reviewed
+            "privacyStatus": privacy_status,
             "selfDeclaredMadeForKids": False,
         },
     }
@@ -100,16 +100,16 @@ def upload_video(video_path, title, description, tags, privacy_status="private")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Upload an episode to YouTube as a private video.")
+    parser = argparse.ArgumentParser(description="Upload an episode to YouTube.")
     parser.add_argument("video_path", help="Path to the video file")
     parser.add_argument("--title", required=True)
     parser.add_argument("--description", required=True)
     parser.add_argument("--tags", default="", help="Comma-separated tags")
     parser.add_argument(
         "--privacy",
-        default="private",
+        default="public",
         choices=["private", "unlisted", "public"],
-        help="Defaults to private for human review before publishing",
+        help="Defaults to public",
     )
     args = parser.parse_args()
 
