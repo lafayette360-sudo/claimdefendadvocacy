@@ -74,7 +74,7 @@ def upload_video(video_path, title, description, tags, privacy_status="private")
 
     body = {
         "snippet": {
-            "title": f"Claim Defend Podcast | {title}",
+            "title": f"Claim Defend Podcast - {title}",
             "description": description,
             "tags": tags,
             "categoryId": "27",  # Education
